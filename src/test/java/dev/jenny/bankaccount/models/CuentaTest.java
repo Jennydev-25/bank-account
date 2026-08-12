@@ -76,4 +76,11 @@ public class CuentaTest {
         cuenta.extractoMensual();
         assertThat((double) cuenta.getSaldo(), is(closeTo(15037.5, 0.01)));
     }
+
+    @Test
+    void testImprimir_NewAccount_ShouldReturnInitialValues() {
+        assertThat(cuenta.imprimir(),
+                is(equalTo(
+                        "Saldo: 15000.00, Consignaciones: 0, Retiros: 0, Comisión mensual: 0.00, Tasa anual: 3.00%")));
+    }
 }
