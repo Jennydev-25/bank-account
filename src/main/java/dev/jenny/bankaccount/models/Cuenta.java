@@ -45,18 +45,20 @@ public class Cuenta {
     }
 
     public void consignar(float cantidad) {
-        if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
-        }
+        validarCantidad(cantidad);
         saldo += cantidad;
         numeroConsignaciones++;
     }
 
     public void retirar(float cantidad) {
+        validarCantidad(cantidad);
+        saldo -= cantidad;
+        numeroRetiros++;
+    }
+
+    private void validarCantidad(float cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
         }
-        saldo -= cantidad;
-        numeroRetiros++;
     }
 }
