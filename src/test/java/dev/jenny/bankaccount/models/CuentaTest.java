@@ -83,4 +83,13 @@ public class CuentaTest {
                 is(equalTo(
                         "Saldo: 15000.00, Consignaciones: 0, Retiros: 0, Comisión mensual: 0.00, Tasa anual: 3.00%")));
     }
+
+    @Test
+    void testImprimir_AfterOperations_ShouldReturnUpdatedValues() {
+        cuenta.consignar(500f);
+        cuenta.retirar(200f);
+        assertThat(cuenta.imprimir(),
+                is(equalTo(
+                        "Saldo: 15300.00, Consignaciones: 1, Retiros: 1, Comisión mensual: 0.00, Tasa anual: 3.00%")));
+    }
 }
