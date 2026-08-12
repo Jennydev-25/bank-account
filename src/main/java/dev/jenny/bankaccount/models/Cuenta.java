@@ -45,6 +45,9 @@ public class Cuenta {
     }
 
     public void consignar(float cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
+        }
         saldo += cantidad;
         numeroConsignaciones++;
     }
