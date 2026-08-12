@@ -51,4 +51,9 @@ public class Cuenta {
         saldo += cantidad;
         numeroConsignaciones++;
     }
+
+    public void retirar(float cantidad) {
+        saldo -= cantidad;
+        numeroRetiros++;
+    }
 }
