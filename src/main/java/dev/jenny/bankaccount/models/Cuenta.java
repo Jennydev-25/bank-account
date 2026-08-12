@@ -1,5 +1,7 @@
 package dev.jenny.bankaccount.models;
 
+import java.util.Locale;
+
 /**
  * Represents a generic bank account with the operations shared by every account
  * type
@@ -66,6 +68,12 @@ public class Cuenta {
     public void extractoMensual() {
         saldo -= comisionMensual;
         calcularInteresMensual();
+    }
+
+    public String imprimir() {
+        return String.format(Locale.US,
+                "Saldo: %.2f, Consignaciones: %d, Retiros: %d, Comisión mensual: %.2f, Tasa anual: %.2f%%",
+                saldo, numeroConsignaciones, numeroRetiros, comisionMensual, tasaAnual);
     }
 
     private void validarCantidad(float cantidad) {
