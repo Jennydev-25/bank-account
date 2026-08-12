@@ -49,4 +49,12 @@ public class CuentaTest {
         assertThat(cuenta.getSaldo(), is(equalTo(14500f)));
         assertThat(cuenta.getNumeroRetiros(), is(equalTo(1)));
     }
+
+    @ParameterizedTest(name = "retirar({0}) should throw exception")
+    @ValueSource(floats = { 0f, -100f })
+    void testRetirar_InvalidAmount_ShouldThrowException(float cantidad) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> cuenta.retirar(cantidad));
+        assertThat(exception.getMessage(), is(equalTo("La cantidad debe ser mayor que cero")));
+    }
 }
