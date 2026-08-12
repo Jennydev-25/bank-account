@@ -43,4 +43,9 @@ public class Cuenta {
     public float getComisionMensual() {
         return comisionMensual;
     }
+
+    public void consignar(float cantidad) {
+        saldo += cantidad;
+        numeroConsignaciones++;
+    }
 }
