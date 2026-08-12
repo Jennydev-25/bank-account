@@ -1,6 +1,7 @@
 package dev.jenny.bankaccount.models;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,5 +63,11 @@ public class CuentaTest {
     void testRetirar_AmountGreaterThanSaldo_ShouldThrowException() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> cuenta.retirar(20000f));
         assertThat(exception.getMessage(), is(equalTo("Saldo insuficiente para realizar el retiro")));
+    }
+
+    @Test
+    void testCalcularInteresMensual_ShouldIncreaseSaldo() {
+        cuenta.calcularInteresMensual();
+        assertThat((double) cuenta.getSaldo(), is(closeTo(15037.5, 0.01)));
     }
 }
