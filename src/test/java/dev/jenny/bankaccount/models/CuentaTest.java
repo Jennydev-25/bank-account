@@ -42,4 +42,11 @@ public class CuentaTest {
                 () -> cuenta.consignar(cantidad));
         assertThat(exception.getMessage(), is(equalTo("La cantidad debe ser mayor que cero")));
     }
+
+    @Test
+    void testRetirar_ValidAmount_ShouldDecreaseSaldoAndCount() {
+        cuenta.retirar(500f);
+        assertThat(cuenta.getSaldo(), is(equalTo(14500f)));
+        assertThat(cuenta.getNumeroRetiros(), is(equalTo(1)));
+    }
 }
