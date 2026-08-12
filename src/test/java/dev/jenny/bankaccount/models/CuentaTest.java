@@ -57,4 +57,10 @@ public class CuentaTest {
                 () -> cuenta.retirar(cantidad));
         assertThat(exception.getMessage(), is(equalTo("La cantidad debe ser mayor que cero")));
     }
+
+    @Test
+    void testRetirar_AmountGreaterThanSaldo_ShouldThrowException() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> cuenta.retirar(20000f));
+        assertThat(exception.getMessage(), is(equalTo("Saldo insuficiente para realizar el retiro")));
+    }
 }
