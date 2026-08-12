@@ -63,6 +63,11 @@ public class Cuenta {
         saldo += saldo * (tasaAnual / 12) / 100;
     }
 
+    public void extractoMensual() {
+        saldo -= comisionMensual;
+        calcularInteresMensual();
+    }
+
     private void validarCantidad(float cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
