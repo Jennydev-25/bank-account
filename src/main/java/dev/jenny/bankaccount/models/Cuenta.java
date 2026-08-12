@@ -52,6 +52,9 @@ public class Cuenta {
 
     public void retirar(float cantidad) {
         validarCantidad(cantidad);
+        if (cantidad > saldo) {
+            throw new IllegalArgumentException("Saldo insuficiente para realizar el retiro");
+        }
         saldo -= cantidad;
         numeroRetiros++;
     }
