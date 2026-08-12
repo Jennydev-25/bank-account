@@ -24,4 +24,11 @@ public class CuentaTest {
         assertThat(cuenta.getNumeroRetiros(), is(equalTo(0)));
         assertThat(cuenta.getComisionMensual(), is(equalTo(0f)));
     }
+
+    @Test
+    void testConsignar_ValidAmount_ShouldIncreaseSaldoAndCount() {
+        cuenta.consignar(500f);
+        assertThat(cuenta.getSaldo(), is(equalTo(15500f)));
+        assertThat(cuenta.getNumeroConsignaciones(), is(equalTo(1)));
+    }
 }
