@@ -70,4 +70,10 @@ public class CuentaTest {
         cuenta.calcularInteresMensual();
         assertThat((double) cuenta.getSaldo(), is(closeTo(15037.5, 0.01)));
     }
+
+    @Test
+    void testExtractoMensual_ShouldSubtractCommissionAndApplyInterest() {
+        cuenta.extractoMensual();
+        assertThat((double) cuenta.getSaldo(), is(closeTo(15037.5, 0.01)));
+    }
 }
