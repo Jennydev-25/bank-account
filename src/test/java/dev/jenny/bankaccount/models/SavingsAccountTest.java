@@ -37,4 +37,11 @@ public class SavingsAccountTest {
                 () -> savingsAccount.deposit(500f));
         assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
     }
+
+    @Test
+    void testWithdraw_ActiveAccount_ShouldDecreaseBalance() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        savingsAccount.withdraw(500f);
+        assertThat(savingsAccount.getBalance(), is(equalTo(14500f)));
+    }
 }
