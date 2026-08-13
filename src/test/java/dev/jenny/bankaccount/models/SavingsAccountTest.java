@@ -15,4 +15,10 @@ public class SavingsAccountTest {
         assertThat(savingsAccount.getAnnualRate(), is(equalTo(3f)));
         assertThat(savingsAccount.isActive(), is(true));
     }
+
+    @Test
+    void testConstructor_BalanceBelowThreshold_ShouldBeInactive() {
+        SavingsAccount savingsAccount = new SavingsAccount(5000f, 3f);
+        assertThat(savingsAccount.isActive(), is(false));
+    }
 }
