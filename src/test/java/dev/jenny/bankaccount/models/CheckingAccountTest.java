@@ -57,4 +57,24 @@ public class CheckingAccountTest {
         assertThat(checkingAccount.getBalance(), is(equalTo(15500f)));
         assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
     }
+
+    @ParameterizedTest(name = "depositing {0} after an overdraft of 5000 should leave balance {1} and overdraft {2}")
+    @MethodSource("depositWithOverdraftTestCases")
+    void testDeposit_WithOverdraft_ShouldIncreaseBalanceAndReduceOverdraft(float amount, float expectedBalance,
+            float expectedOverdraft) {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+        checkingAccount.withdraw(20000f);
+
+        checkingAccount.deposit(amount);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(expectedBalance)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(expectedOverdraft)));
+    }
+
+    private static Stream<Arguments> depositWithOverdraftTestCases() {
+        return Stream.of(
+                Arguments.of(2000f, 2000f, 3000f), // parcial: sobregiro baja, no llega a 0
+                Arguments.of(5000f, 5000f, 0f), // exacto: sobregiro llega justo a 0
+                Arguments.of(8000f, 8000f, 0f)); // de sobra: sobregiro a 0, el resto sube el saldo
+    }
 }
