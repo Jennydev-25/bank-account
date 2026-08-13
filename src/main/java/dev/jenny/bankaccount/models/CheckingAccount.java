@@ -16,4 +16,16 @@ public class CheckingAccount extends Account {
     public float getOverdraft() {
         return overdraft;
     }
+
+    @Override
+    public void withdraw(float amount) {
+        validateAmount(amount);
+        if (amount > balance) {
+            overdraft += amount - balance;
+            balance = 0f;
+        } else {
+            balance -= amount;
+        }
+        withdrawalCount++;
+    }
 }
