@@ -1,6 +1,7 @@
 package dev.jenny.bankaccount.models;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
@@ -76,5 +77,14 @@ public class CheckingAccountTest {
                 Arguments.of(2000f, 2000f, 3000f), // parcial: sobregiro baja, no llega a 0
                 Arguments.of(5000f, 5000f, 0f), // exacto: sobregiro llega justo a 0
                 Arguments.of(8000f, 8000f, 0f)); // de sobra: sobregiro a 0, el resto sube el saldo
+    }
+
+    @Test
+    void testGenerateMonthlyStatement_ShouldSubtractFeeAndApplyInterest() {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+
+        checkingAccount.generateMonthlyStatement();
+
+        assertThat((double) checkingAccount.getBalance(), is(closeTo(15037.5, 0.01)));
     }
 }
