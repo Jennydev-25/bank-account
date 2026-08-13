@@ -32,8 +32,6 @@ public class CheckingAccount extends Account {
     @Override
     public void deposit(float amount) {
         super.deposit(amount);
-        if (overdraft > 0) {
-            overdraft = Math.max(0, overdraft - amount);
-        }
+        overdraft = Math.max(0, overdraft - amount);
     }
 }
