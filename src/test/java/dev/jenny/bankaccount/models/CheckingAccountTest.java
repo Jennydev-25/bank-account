@@ -87,4 +87,12 @@ public class CheckingAccountTest {
 
         assertThat((double) checkingAccount.getBalance(), is(closeTo(15037.5, 0.01)));
     }
+
+    @Test
+    void testPrint_NewAccount_ShouldReturnInitialValues() {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+
+        assertThat(checkingAccount.print(),
+                is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0, Overdraft: 0.00")));
+    }
 }
