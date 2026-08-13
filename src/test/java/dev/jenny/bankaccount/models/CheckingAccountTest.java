@@ -95,4 +95,14 @@ public class CheckingAccountTest {
         assertThat(checkingAccount.print(),
                 is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0, Overdraft: 0.00")));
     }
+
+    @Test
+    void testPrint_AfterOperations_ShouldReturnUpdatedValues() {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+        checkingAccount.withdraw(20000f);
+        checkingAccount.deposit(2000f);
+
+        assertThat(checkingAccount.print(),
+                is(equalTo("Balance: 2000.00, Monthly fee: 0.00, Transactions: 2, Overdraft: 3000.00")));
+    }
 }
