@@ -1,5 +1,7 @@
 package dev.jenny.bankaccount.models;
 
+import java.util.Locale;
+
 /**
  * Represents a savings account: deposits and withdrawals only work while the
  * account is active. The account becomes active once the balance reaches
@@ -37,6 +39,12 @@ public class SavingsAccount extends Account {
         }
         updateActiveStatus();
         super.generateMonthlyStatement();
+    }
+
+    @Override
+    public String print() {
+        return String.format(Locale.US, "Balance: %.2f, Monthly fee: %.2f, Transactions: %d",
+                balance, monthlyFee, depositCount + withdrawalCount);
     }
 
     private void updateActiveStatus() {
