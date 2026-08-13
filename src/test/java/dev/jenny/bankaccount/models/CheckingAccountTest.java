@@ -37,4 +37,14 @@ public class CheckingAccountTest {
                 Arguments.of(5000f, 10000f),
                 Arguments.of(15000f, 0f));
     }
+
+    @Test
+    void testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft() {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+
+        checkingAccount.withdraw(20000f);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(0f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(5000f)));
+    }
 }
