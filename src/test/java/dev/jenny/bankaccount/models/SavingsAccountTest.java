@@ -44,4 +44,12 @@ public class SavingsAccountTest {
         savingsAccount.withdraw(500f);
         assertThat(savingsAccount.getBalance(), is(equalTo(14500f)));
     }
+
+    @Test
+    void testWithdraw_InactiveAccount_ShouldThrowException() {
+        SavingsAccount savingsAccount = new SavingsAccount(5000f, 3f);
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> savingsAccount.withdraw(500f));
+        assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
+    }
 }
