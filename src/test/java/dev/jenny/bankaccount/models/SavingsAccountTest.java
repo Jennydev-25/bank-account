@@ -76,4 +76,13 @@ public class SavingsAccountTest {
         assertThat(savingsAccount.print(),
                 is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0")));
     }
+
+    @Test
+    void testPrint_AfterOperations_ShouldReturnUpdatedValues() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        savingsAccount.deposit(500f);
+        savingsAccount.withdraw(200f);
+        assertThat(savingsAccount.print(),
+                is(equalTo("Balance: 15300.00, Monthly fee: 0.00, Transactions: 2")));
+    }
 }
