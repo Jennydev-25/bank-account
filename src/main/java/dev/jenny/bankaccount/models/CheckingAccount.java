@@ -34,4 +34,9 @@ public class CheckingAccount extends Account {
         super.deposit(amount);
         overdraft = Math.max(0, overdraft - amount);
     }
+
+    @Override
+    public void generateMonthlyStatement() {
+        super.generateMonthlyStatement();
+    }
 }
