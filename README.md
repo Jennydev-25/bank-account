@@ -16,7 +16,7 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 
 ## 📋 Descripción
 
-**Cuenta Bancaria** es un proyecto de Programación Orientada a Objetos (**POO**) que simula la gestión básica de una entidad financiera: `Cuenta` es la clase padre, y `CuentaAhorros` y `CuentaCorriente` son sus clases hijas que heredan de ella el comportamiento común (consignar, retirar, calcular el interés, generar el extracto), reutilizando ese código y añadiendo solo la regla propia de cada tipo de cuenta.
+**Cuenta Bancaria** es un proyecto de Programación Orientada a Objetos (**POO**) que simula la gestión básica de una entidad financiera: `Account` es la clase padre, y `CheckingAccount` y `SavingsAccount` son sus clases hijas que heredan de ella el comportamiento común (consignar, retirar, calcular el interés, generar el extracto), reutilizando ese código y añadiendo solo la regla propia de cada tipo de cuenta.
 
 <details>
 <summary><strong>Enunciado completo</strong></summary>
