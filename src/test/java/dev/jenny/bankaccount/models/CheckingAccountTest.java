@@ -47,4 +47,14 @@ public class CheckingAccountTest {
         assertThat(checkingAccount.getBalance(), is(equalTo(0f)));
         assertThat(checkingAccount.getOverdraft(), is(equalTo(5000f)));
     }
+
+    @Test
+    void testDeposit_NoOverdraft_ShouldIncreaseBalanceOnly() {
+        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
+
+        checkingAccount.deposit(500f);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(15500f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
+    }
 }
