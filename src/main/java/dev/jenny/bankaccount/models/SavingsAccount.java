@@ -18,6 +18,14 @@ public class SavingsAccount extends Account {
         return active;
     }
 
+    @Override
+    public void deposit(float amount) {
+        if (!active) {
+            throw new IllegalStateException("Account is inactive");
+        }
+        super.deposit(amount);
+    }
+
     private void updateActiveStatus() {
         active = balance >= 10000;
     }
