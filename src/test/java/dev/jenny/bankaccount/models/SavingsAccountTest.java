@@ -69,4 +69,11 @@ public class SavingsAccountTest {
         savingsAccount.generateMonthlyStatement();
         assertThat(savingsAccount.getMonthlyFee(), is(equalTo(1000f)));
     }
+
+    @Test
+    void testPrint_NewAccount_ShouldReturnInitialValues() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        assertThat(savingsAccount.print(),
+                is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0")));
+    }
 }
