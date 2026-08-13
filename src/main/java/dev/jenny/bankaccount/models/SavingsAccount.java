@@ -20,21 +20,23 @@ public class SavingsAccount extends Account {
 
     @Override
     public void deposit(float amount) {
-        if (!active) {
-            throw new IllegalStateException("Account is inactive");
-        }
+        validateActive();
         super.deposit(amount);
     }
 
     @Override
     public void withdraw(float amount) {
-        if (!active) {
-            throw new IllegalStateException("Account is inactive");
-        }
+        validateActive();
         super.withdraw(amount);
     }
 
     private void updateActiveStatus() {
         active = balance >= 10000;
+    }
+
+    private void validateActive() {
+        if (!active) {
+            throw new IllegalStateException("Account is inactive");
+        }
     }
 }
