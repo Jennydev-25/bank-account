@@ -1,5 +1,7 @@
 package dev.jenny.bankaccount.models;
 
+import java.util.Locale;
+
 /**
  * Represents a checking account: withdrawals can exceed the balance, the
  * difference is tracked as overdraft
@@ -38,5 +40,11 @@ public class CheckingAccount extends Account {
     @Override
     public void generateMonthlyStatement() {
         super.generateMonthlyStatement();
+    }
+
+    @Override
+    public String print() {
+        return String.format(Locale.US, "Balance: %.2f, Monthly fee: %.2f, Transactions: %d, Overdraft: %.2f",
+                balance, monthlyFee, depositCount + withdrawalCount, overdraft);
     }
 }
