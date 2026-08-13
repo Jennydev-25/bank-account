@@ -59,4 +59,14 @@ public class SavingsAccountTest {
         savingsAccount.generateMonthlyStatement();
         assertThat(savingsAccount.getMonthlyFee(), is(equalTo(0f)));
     }
+
+    @Test
+    void testGenerateMonthlyStatement_MoreThanFourWithdrawals_ShouldAddFee() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        for (int i = 0; i < 5; i++) {
+            savingsAccount.withdraw(100f);
+        }
+        savingsAccount.generateMonthlyStatement();
+        assertThat(savingsAccount.getMonthlyFee(), is(equalTo(1000f)));
+    }
 }
