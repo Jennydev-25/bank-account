@@ -52,4 +52,11 @@ public class SavingsAccountTest {
                 () -> savingsAccount.withdraw(500f));
         assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
     }
+
+    @Test
+    void testGenerateMonthlyStatement_FourOrFewerWithdrawals_ShouldNotAddFee() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        savingsAccount.generateMonthlyStatement();
+        assertThat(savingsAccount.getMonthlyFee(), is(equalTo(0f)));
+    }
 }
