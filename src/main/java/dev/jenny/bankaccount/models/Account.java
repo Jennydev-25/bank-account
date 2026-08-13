@@ -76,7 +76,7 @@ public class Account {
                 balance, depositCount, withdrawalCount, monthlyFee, annualRate);
     }
 
-    private void validateAmount(float amount) {
+    protected void validateAmount(float amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be greater than zero");
         }
