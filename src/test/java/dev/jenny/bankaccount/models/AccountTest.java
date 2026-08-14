@@ -6,9 +6,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class AccountTest {
@@ -44,11 +48,18 @@ public class AccountTest {
         assertThat(exception.getMessage(), is(equalTo("Amount must be greater than zero")));
     }
 
-    @Test
-    void testWithdraw_ValidAmount_ShouldDecreaseBalanceAndCount() {
-        account.withdraw(500f);
-        assertThat(account.getBalance(), is(equalTo(14500f)));
+    @ParameterizedTest(name = "withdraw({0}) should leave balance {1}")
+    @MethodSource("validWithdrawTestCases")
+    void testWithdraw_ValidAmount_ShouldDecreaseBalanceAndCount(float amount, float expectedBalance) {
+        account.withdraw(amount);
+        assertThat(account.getBalance(), is(equalTo(expectedBalance)));
         assertThat(account.getWithdrawalCount(), is(equalTo(1)));
+    }
+
+    private static Stream<Arguments> validWithdrawTestCases() {
+        return Stream.of(
+                Arguments.of(500f, 14500f),
+                Arguments.of(15000f, 0f));
     }
 
     @ParameterizedTest(name = "withdraw({0}) should throw exception")
