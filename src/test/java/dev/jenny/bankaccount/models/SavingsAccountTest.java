@@ -5,8 +5,12 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class SavingsAccountTest {
@@ -56,21 +60,36 @@ public class SavingsAccountTest {
         assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
     }
 
-    @Test
-    void testGenerateMonthlyStatement_FourOrFewerWithdrawals_ShouldNotAddFee() {
+    @ParameterizedTest(name = "{0} withdrawals should not add a fee")
+    @ValueSource(ints = { 0, 4 })
+    void testGenerateMonthlyStatement_FourOrFewerWithdrawals_ShouldNotAddFee(int withdrawalCount) {
         SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        for (int i = 0; i < withdrawalCount; i++) {
+            savingsAccount.withdraw(100f);
+        }
+
         savingsAccount.generateMonthlyStatement();
+
         assertThat(savingsAccount.getMonthlyFee(), is(equalTo(0f)));
     }
 
-    @Test
-    void testGenerateMonthlyStatement_MoreThanFourWithdrawals_ShouldAddFee() {
+    @ParameterizedTest(name = "{0} withdrawals should add a fee of {1}")
+    @MethodSource("excessWithdrawalFeeTestCases")
+    void testGenerateMonthlyStatement_MoreThanFourWithdrawals_ShouldAddFee(int withdrawalCount, float expectedFee) {
         SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < withdrawalCount; i++) {
             savingsAccount.withdraw(100f);
         }
+
         savingsAccount.generateMonthlyStatement();
-        assertThat(savingsAccount.getMonthlyFee(), is(equalTo(1000f)));
+
+        assertThat(savingsAccount.getMonthlyFee(), is(equalTo(expectedFee)));
+    }
+
+    private static Stream<Arguments> excessWithdrawalFeeTestCases() {
+        return Stream.of(
+                Arguments.of(5, 1000f),
+                Arguments.of(6, 2000f));
     }
 
     @Test
