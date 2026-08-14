@@ -1,18 +1,66 @@
 package dev.jenny.bankaccount;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.List;
+
+import dev.jenny.bankaccount.models.Account;
+import dev.jenny.bankaccount.models.CheckingAccount;
+import dev.jenny.bankaccount.models.SavingsAccount;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-/**
- * Unit test for simple App.
- */
 class AppTest {
-    /**
-     * Rigorous Test.
-     */
+
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+
+    @BeforeEach
+    void setUp() {
+        System.setOut(new PrintStream(outputStream));
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOut);
+    }
+
     @Test
-    void testApp() {
-        assertEquals(1, 1);
+    void testCreateDemoAccounts_ShouldReturnThreeAccountsWithExpectedState() {
+        List<Account> accounts = App.createDemoAccounts();
+
+        assertThat(accounts, hasSize(3));
+
+        Account account = accounts.get(0);
+        assertThat((double) account.getBalance(), is(closeTo(15338.25, 0.01)));
+
+        SavingsAccount savingsAccount = (SavingsAccount) accounts.get(1);
+        assertThat((double) savingsAccount.getBalance(), is(closeTo(12731.75, 0.01)));
+        assertThat(savingsAccount.isActive(), is(true));
+
+        CheckingAccount checkingAccount = (CheckingAccount) accounts.get(2);
+        assertThat((double) checkingAccount.getBalance(), is(closeTo(2005.0, 0.01)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(3000f)));
+    }
+
+    @Test
+    void testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount() {
+        List<Account> accounts = App.createDemoAccounts();
+
+        App.printAccounts(accounts);
+
+        String output = outputStream.toString();
+        assertThat(output, containsString(accounts.get(0).print()));
+        assertThat(output, containsString(accounts.get(1).print()));
+        assertThat(output, containsString(accounts.get(2).print()));
     }
 }
