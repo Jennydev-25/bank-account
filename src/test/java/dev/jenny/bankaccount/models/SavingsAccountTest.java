@@ -6,13 +6,16 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class SavingsAccountTest {
 
-    @Test
-    void testConstructor_BalanceAboveThreshold_ShouldBeActive() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
-        assertThat(savingsAccount.getBalance(), is(equalTo(15000f)));
+    @ParameterizedTest(name = "balance {0} should result in an active account")
+    @ValueSource(floats = { 10000f, 15000f })
+    void testConstructor_BalanceAtOrAboveThreshold_ShouldBeActive(float balance) {
+        SavingsAccount savingsAccount = new SavingsAccount(balance, 3f);
+        assertThat(savingsAccount.getBalance(), is(equalTo(balance)));
         assertThat(savingsAccount.getAnnualRate(), is(equalTo(3f)));
         assertThat(savingsAccount.isActive(), is(true));
     }
