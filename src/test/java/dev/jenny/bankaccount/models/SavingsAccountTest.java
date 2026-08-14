@@ -93,6 +93,16 @@ public class SavingsAccountTest {
     }
 
     @Test
+    void testGenerateMonthlyStatement_BalanceDropsBelowThreshold_ShouldDeactivateAccount() {
+        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
+        savingsAccount.withdraw(6000f);
+
+        savingsAccount.generateMonthlyStatement();
+
+        assertThat(savingsAccount.isActive(), is(false));
+    }
+
+    @Test
     void testPrint_NewAccount_ShouldReturnInitialValues() {
         SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         assertThat(savingsAccount.print(),
