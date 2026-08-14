@@ -39,14 +39,21 @@ public class CheckingAccountTest {
                 Arguments.of(15000f, 0f));
     }
 
-    @Test
-    void testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft() {
+    @ParameterizedTest(name = "withdrawing {0} from a balance of 15000 should create an overdraft of {1}")
+    @MethodSource("withdrawExceedsBalanceTestCases")
+    void testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft(float amount, float expectedOverdraft) {
         CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
 
-        checkingAccount.withdraw(20000f);
+        checkingAccount.withdraw(amount);
 
         assertThat(checkingAccount.getBalance(), is(equalTo(0f)));
-        assertThat(checkingAccount.getOverdraft(), is(equalTo(5000f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(expectedOverdraft)));
+    }
+
+    private static Stream<Arguments> withdrawExceedsBalanceTestCases() {
+        return Stream.of(
+                Arguments.of(20000f, 5000f),
+                Arguments.of(18000f, 3000f));
     }
 
     @Test
