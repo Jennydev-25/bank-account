@@ -38,4 +38,10 @@ public class App {
 
         return accounts;
     }
+
+    static void printAccounts(List<Account> accounts) {
+        for (Account account : accounts) {
+            System.out.println(account.print());
+        }
+    }
 }
