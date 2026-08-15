@@ -14,6 +14,7 @@ public class SavingsAccount extends Account {
     private static final float EXTRA_WITHDRAWAL_FEE = 1000f;
 
     protected boolean active;
+    private int withdrawalsAtLastStatement;
 
     public SavingsAccount(float balance, float annualRate) {
         super(balance, annualRate);
@@ -38,9 +39,11 @@ public class SavingsAccount extends Account {
 
     @Override
     public void generateMonthlyStatement() {
-        if (withdrawalCount > FREE_WITHDRAWALS_PER_STATEMENT) {
-            monthlyFee += EXTRA_WITHDRAWAL_FEE * (withdrawalCount - FREE_WITHDRAWALS_PER_STATEMENT);
-        }
+        int withdrawalsSinceLastStatement = withdrawalCount - withdrawalsAtLastStatement;
+        monthlyFee = withdrawalsSinceLastStatement > FREE_WITHDRAWALS_PER_STATEMENT
+                ? EXTRA_WITHDRAWAL_FEE * (withdrawalsSinceLastStatement - FREE_WITHDRAWALS_PER_STATEMENT)
+                : 0f;
+        withdrawalsAtLastStatement = withdrawalCount;
         updateActiveStatus();
         super.generateMonthlyStatement();
     }
