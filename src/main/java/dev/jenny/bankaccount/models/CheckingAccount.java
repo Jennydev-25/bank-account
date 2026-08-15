@@ -19,6 +19,10 @@ public class CheckingAccount extends Account {
         return overdraft;
     }
 
+    /**
+     * Withdraws the given amount; any excess over the balance is added to
+     * the overdraft instead of throwing an exception
+     */
     @Override
     public void withdraw(float amount) {
         validateAmount(amount);
@@ -31,6 +35,10 @@ public class CheckingAccount extends Account {
         withdrawalCount++;
     }
 
+    /**
+     * Deposits the given amount, applying it to the overdraft first; only
+     * the leftover increases the balance
+     */
     @Override
     public void deposit(float amount) {
         validateAmount(amount);
