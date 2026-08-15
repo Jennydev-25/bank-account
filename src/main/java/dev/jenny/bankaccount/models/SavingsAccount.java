@@ -16,6 +16,9 @@ public class SavingsAccount extends Account {
     protected boolean active;
     private int withdrawalsAtLastStatement;
 
+    /**
+     * Creates a savings account, deriving its active status from the balance
+     */
     public SavingsAccount(float balance, float annualRate) {
         super(balance, annualRate);
         updateActiveStatus();
@@ -25,18 +28,28 @@ public class SavingsAccount extends Account {
         return active;
     }
 
+    /**
+     * Deposits the given amount, only while the account is active
+     */
     @Override
     public void deposit(float amount) {
         validateActive();
         super.deposit(amount);
     }
 
+    /**
+     * Withdraws the given amount, only while the account is active
+     */
     @Override
     public void withdraw(float amount) {
         validateActive();
         super.withdraw(amount);
     }
 
+    /**
+     * Charges a fee for withdrawals beyond the free limit, refreshes the
+     * active status, and applies the fee and interest
+     */
     @Override
     public void generateMonthlyStatement() {
         int withdrawalsSinceLastStatement = withdrawalCount - withdrawalsAtLastStatement;
