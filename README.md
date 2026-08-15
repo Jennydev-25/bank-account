@@ -196,6 +196,83 @@ bank-account/
 
 ---
 
+## 🧪 Testing
+
+Siguiendo la metodología **TDD**, cada clase se testea cubriendo todos sus escenarios con **JUnit 5 + Hamcrest**:
+
+### `AccountTest`
+
+Cubre los métodos que el enunciado pide para la clase padre: consignar, retirar sin superar el saldo, calcular el interés mensual, generar el extracto y devolver los valores de los atributos. Estos mismos métodos se heredan y reutilizan en las dos cuentas hijas.
+
+![Tests de AccountTest en verde](assets/images/test-explorer/test-explorer-account.png)
+
+| Test                                                             | Escenario                                                      |
+| ---------------------------------------------------------------- | -------------------------------------------------------------- |
+| `testConstructor_ValidValues_ShouldInitializeFields`             | Inicializa los atributos con los valores recibidos             |
+| `testDeposit_ValidAmount_ShouldIncreaseBalanceAndCount`          | Aumenta el saldo y el contador de consignaciones               |
+| `testDeposit_InvalidAmount_ShouldThrowException`                 | Lanza excepción si la cantidad a consignar no es válida        |
+| `testWithdraw_ValidAmount_ShouldDecreaseBalanceAndCount`         | Reduce el saldo y aumenta el contador de retiros               |
+| `testWithdraw_InvalidAmount_ShouldThrowException`                | Lanza excepción si la cantidad a retirar no es válida          |
+| `testWithdraw_AmountGreaterThanBalance_ShouldThrowException`     | Lanza excepción si se intenta retirar más saldo del disponible |
+| `testCalculateMonthlyInterest_ShouldIncreaseBalance`             | Aumenta el saldo aplicando el interés mensual                  |
+| `testGenerateMonthlyStatement_ShouldSubtractFeeAndApplyInterest` | Resta la comisión mensual y aplica el interés                  |
+| `testPrint_NewAccount_ShouldReturnInitialValues`                 | Devuelve los valores iniciales de una cuenta nueva             |
+| `testPrint_AfterOperations_ShouldReturnUpdatedValues`            | Devuelve los valores actualizados tras varias operaciones      |
+
+### `CheckingAccountTest`
+
+Cubre el comportamiento propio de la cuenta corriente que pide el enunciado: retirar por encima del saldo generando sobregiro, y consignar reduciendo ese sobregiro antes de aumentar el saldo. También verifica el nuevo `print()` con el valor del sobregiro incluido.
+
+![Tests de CheckingAccountTest en verde](assets/images/test-explorer/test-explorer-checking-account.png)
+
+| Test                                                                | Escenario                                                                            |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `testConstructor_ValidValues_ShouldInitializeFields`                | Inicializa los atributos, incluido el sobregiro a 0                                  |
+| `testWithdraw_AmountWithinBalance_ShouldUpdateBalanceOnly`          | Retira dentro del saldo disponible, sin generar sobregiro                            |
+| `testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft`           | Retira más saldo del disponible y genera sobregiro                                   |
+| `testDeposit_NoOverdraft_ShouldIncreaseBalanceOnly`                 | Consigna sin sobregiro pendiente, aumentando solo el saldo                           |
+| `testDeposit_WithOverdraft_ShouldIncreaseBalanceAndReduceOverdraft` | Consigna con sobregiro pendiente: primero lo cancela, y el sobrante aumenta el saldo |
+| `testGenerateMonthlyStatement_ShouldSubtractFeeAndApplyInterest`    | Invoca al método heredado sin lógica adicional                                       |
+| `testPrint_NewAccount_ShouldReturnInitialValues`                    | Devuelve los valores iniciales de una cuenta nueva                                   |
+| `testPrint_AfterOperations_ShouldReturnUpdatedValues`               | Devuelve los valores actualizados, incluido el sobregiro                             |
+
+### `SavingsAccountTest`
+
+Cubre el comportamiento propio de la cuenta de ahorros que pide el enunciado: activarse o desactivarse según el saldo, permitir consignar y retirar solo si está activa, y cobrar comisión por cada retiro por encima de 4 en el extracto mensual. También verifica el nuevo `print()` con el total de transacciones.
+
+![Tests de SavingsAccountTest en verde](assets/images/test-explorer/test-explorer-savings-account.png)
+
+| Test                                                                                       | Escenario                                                                          |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `testConstructor_BalanceAtOrAboveThreshold_ShouldBeActive`                                 | Se crea activa si el saldo alcanza los $10.000                                     |
+| `testConstructor_BalanceBelowThreshold_ShouldBeInactive`                                   | Se crea inactiva si el saldo no llega a $10.000                                    |
+| `testDeposit_ActiveAccount_ShouldIncreaseBalance`                                          | Consigna si la cuenta está activa                                                  |
+| `testDeposit_InactiveAccount_ShouldThrowException`                                         | Lanza excepción si se consigna con la cuenta inactiva                              |
+| `testWithdraw_ActiveAccount_ShouldDecreaseBalance`                                         | Retira si la cuenta está activa                                                    |
+| `testWithdraw_InactiveAccount_ShouldThrowException`                                        | Lanza excepción si se retira con la cuenta inactiva                                |
+| `testGenerateMonthlyStatement_FourOrFewerWithdrawals_ShouldNotAddFee`                      | No cobra comisión con 4 retiros o menos desde el último extracto                   |
+| `testGenerateMonthlyStatement_MoreThanFourWithdrawals_ShouldAddFee`                        | Cobra comisión por cada retiro por encima de 4 desde el último extracto            |
+| `testGenerateMonthlyStatement_CalledAgainWithoutNewWithdrawals_ShouldNotChargeFeeAgain`    | No vuelve a cobrar la comisión si no hay retiros nuevos desde el extracto anterior |
+| `testGenerateMonthlyStatement_BalanceDropsBelowThreshold_ShouldDeactivateAccount`          | Desactiva la cuenta si el saldo cae por debajo de $10.000                          |
+| `testGenerateMonthlyStatement_BalanceReachesThresholdWithInterest_ShouldReactivateAccount` | Reactiva la cuenta si el saldo alcanza $10.000 tras aplicar el interés             |
+| `testPrint_NewAccount_ShouldReturnInitialValues`                                           | Devuelve los valores iniciales de una cuenta nueva                                 |
+| `testPrint_AfterOperations_ShouldReturnUpdatedValues`                                      | Devuelve los valores actualizados tras varias operaciones                          |
+
+### `AppTest`
+
+Cubre la clase de presentación, encargada de crear las tres cuentas de ejemplo y mostrarlas por consola. No forma parte de la lógica de negocio que pide el enunciado, pero se testea igualmente para mantener el coverage exigido.
+
+![Tests de AppTest en verde](assets/images/test-explorer/test-explorer-app.png)
+
+| Test                                                                | Escenario                                          |
+| ------------------------------------------------------------------- | -------------------------------------------------- |
+| `testConstructor_ShouldCreateInstance`                              | Crea una instancia de `App`                        |
+| `testCreateDemoAccounts_ShouldReturnThreeAccountsWithExpectedState` | Devuelve las 3 cuentas demo con el estado esperado |
+| `testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount`      | Imprime cada cuenta de la lista por consola        |
+| `testMain_ShouldPrintDemoAccounts`                                  | Ejecuta `main` e imprime las cuentas demo          |
+
+---
+
 ## 🛠️ Tecnologías
 
 - **[Java 21](https://www.oracle.com/java/technologies/downloads/)** — Lenguaje de programación del proyecto
