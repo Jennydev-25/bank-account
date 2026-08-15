@@ -56,7 +56,17 @@ class AppTest {
     void testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount() {
         App.printAccounts(accounts);
 
-        String output = outputStream.toString();
+        String output = outputStream.toString().trim();
+        assertThat(output, containsString(accounts.get(0).print()));
+        assertThat(output, containsString(accounts.get(1).print()));
+        assertThat(output, containsString(accounts.get(2).print()));
+    }
+
+    @Test
+    void testMain_ShouldPrintDemoAccounts() {
+        App.main(new String[] {});
+
+        String output = outputStream.toString().trim();
         assertThat(output, containsString(accounts.get(0).print()));
         assertThat(output, containsString(accounts.get(1).print()));
         assertThat(output, containsString(accounts.get(2).print()));
