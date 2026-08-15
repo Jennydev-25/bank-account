@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -37,6 +38,11 @@ class AppTest {
     }
 
     @Test
+    void testConstructor_ShouldCreateInstance() {
+        assertThat(new App(), is(notNullValue()));
+    }
+
+    @Test
     void testCreateDemoAccounts_ShouldReturnThreeAccountsWithExpectedState() {
         assertThat(accounts, hasSize(3));
 
@@ -56,7 +62,17 @@ class AppTest {
     void testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount() {
         App.printAccounts(accounts);
 
-        String output = outputStream.toString();
+        String output = outputStream.toString().trim();
+        assertThat(output, containsString(accounts.get(0).print()));
+        assertThat(output, containsString(accounts.get(1).print()));
+        assertThat(output, containsString(accounts.get(2).print()));
+    }
+
+    @Test
+    void testMain_ShouldPrintDemoAccounts() {
+        App.main(new String[] {});
+
+        String output = outputStream.toString().trim();
         assertThat(output, containsString(accounts.get(0).print()));
         assertThat(output, containsString(accounts.get(1).print()));
         assertThat(output, containsString(accounts.get(2).print()));

@@ -13,6 +13,7 @@ import dev.jenny.bankaccount.models.SavingsAccount;
 public class App {
 
     public static void main(String[] args) {
+        printAccounts(createDemoAccounts());
     }
 
     static List<Account> createDemoAccounts() {
