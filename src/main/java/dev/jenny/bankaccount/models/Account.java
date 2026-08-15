@@ -8,6 +8,9 @@ import java.util.Locale;
  */
 public class Account {
 
+    private static final int MONTHS_PER_YEAR = 12;
+    private static final int PERCENT_DIVISOR = 100;
+
     protected float balance;
     protected int depositCount;
     protected int withdrawalCount;
@@ -62,7 +65,7 @@ public class Account {
     }
 
     public void calculateMonthlyInterest() {
-        balance += balance * (annualRate / 12) / 100;
+        balance += balance * (annualRate / MONTHS_PER_YEAR) / PERCENT_DIVISOR;
     }
 
     public void generateMonthlyStatement() {
