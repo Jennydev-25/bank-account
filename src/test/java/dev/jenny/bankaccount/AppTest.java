@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -34,6 +35,11 @@ class AppTest {
     @AfterEach
     void tearDown() {
         System.setOut(originalOut);
+    }
+
+    @Test
+    void testConstructor_ShouldCreateInstance() {
+        assertThat(new App(), is(notNullValue()));
     }
 
     @Test
