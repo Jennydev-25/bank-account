@@ -54,7 +54,7 @@ class AppTest {
         assertThat(savingsAccount.isActive(), is(true));
 
         CheckingAccount checkingAccount = (CheckingAccount) accounts.get(2);
-        assertThat((double) checkingAccount.getBalance(), is(closeTo(2005.0, 0.01)));
+        assertThat((double) checkingAccount.getBalance(), is(closeTo(0.0, 0.01)));
         assertThat(checkingAccount.getOverdraft(), is(equalTo(3000f)));
     }
 

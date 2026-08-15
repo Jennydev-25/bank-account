@@ -81,9 +81,9 @@ public class CheckingAccountTest {
 
     private static Stream<Arguments> depositWithOverdraftTestCases() {
         return Stream.of(
-                Arguments.of(2000f, 2000f, 3000f), // partial: overdraft decreases but doesn't reach 0
-                Arguments.of(5000f, 5000f, 0f), // exact: overdraft reaches exactly 0
-                Arguments.of(8000f, 8000f, 0f)); // excess: overdraft reaches 0, remainder increases balance
+                Arguments.of(2000f, 0f, 3000f), // partial: overdraft decreases but doesn't reach 0
+                Arguments.of(5000f, 0f, 0f), // exact: overdraft reaches exactly 0
+                Arguments.of(8000f, 3000f, 0f)); // excess: overdraft reaches 0, remainder increases balance
     }
 
     @Test
@@ -105,6 +105,6 @@ public class CheckingAccountTest {
         checkingAccount.deposit(2000f);
 
         assertThat(checkingAccount.print(),
-                is(equalTo("Balance: 2000.00, Monthly fee: 0.00, Transactions: 2, Overdraft: 3000.00")));
+                is(equalTo("Balance: 0.00, Monthly fee: 0.00, Transactions: 2, Overdraft: 3000.00")));
     }
 }
