@@ -49,12 +49,18 @@ public class Account {
         return monthlyFee;
     }
 
+    /**
+     * Deposits the given amount, increasing the balance
+     */
     public void deposit(float amount) {
         validateAmount(amount);
         balance += amount;
         depositCount++;
     }
 
+    /**
+     * Withdraws the given amount, decreasing the balance
+     */
     public void withdraw(float amount) {
         validateAmount(amount);
         if (amount > balance) {
@@ -64,10 +70,16 @@ public class Account {
         withdrawalCount++;
     }
 
+    /**
+     * Applies the monthly interest based on the annual rate
+     */
     public void calculateMonthlyInterest() {
         balance += balance * (annualRate / MONTHS_PER_YEAR) / PERCENT_DIVISOR;
     }
 
+    /**
+     * Subtracts the monthly fee and applies the monthly interest
+     */
     public void generateMonthlyStatement() {
         balance -= monthlyFee;
         calculateMonthlyInterest();
