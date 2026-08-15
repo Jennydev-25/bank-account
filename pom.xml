@@ -17,6 +17,7 @@
     <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+    <exec-maven-plugin.version>3.6.3</exec-maven-plugin.version>
     <!-- Coverage thresholds start at 0%, raised as tests are added. Minimum required: 70% -->
     <jacoco.unit-tests.limit.instruction-ratio>70%</jacoco.unit-tests.limit.instruction-ratio>
     <jacoco.unit-tests.limit.branch-ratio>70%</jacoco.unit-tests.limit.branch-ratio>
@@ -183,6 +184,21 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>dev.jenny.bankaccount.App</mainClass>
+        </configuration>
       </plugin>
     </plugins>
   </build>
