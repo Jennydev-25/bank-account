@@ -97,6 +97,18 @@ public class SavingsAccountTest {
     }
 
     @Test
+    void testGenerateMonthlyStatement_CalledAgainWithoutNewWithdrawals_ShouldNotChargeFeeAgain() {
+        for (int i = 0; i < 5; i++) {
+            savingsAccount.withdraw(100f);
+        }
+        savingsAccount.generateMonthlyStatement();
+
+        savingsAccount.generateMonthlyStatement();
+
+        assertThat(savingsAccount.getMonthlyFee(), is(equalTo(0f)));
+    }
+
+    @Test
     void testGenerateMonthlyStatement_BalanceDropsBelowThreshold_ShouldDeactivateAccount() {
         savingsAccount.withdraw(6000f);
 
