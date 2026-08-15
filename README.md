@@ -15,6 +15,7 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 - [Testing](#-testing)
 - [Cobertura de tests](#-cobertura-de-tests-coverage)
 - [Tecnologías](#-tecnologías)
+- [Recursos](#-recursos)
 - [Autora](#-autora)
 
 ---
@@ -246,6 +247,17 @@ mvn exec:java
 
 ```text
 bank-account/
+├── assets/
+│   └── images/
+│       ├── coverage/
+│       │   └── coverage-jacoco.png
+│       ├── diagram/
+│       │   └── class-diagram-uml.png
+│       └── test-explorer/
+│           ├── test-explorer-account.png
+│           ├── test-explorer-app.png
+│           ├── test-explorer-checking-account.png
+│           └── test-explorer-savings-account.png
 ├── src/
 │   ├── main/java/dev/jenny/bankaccount/
 │   │   ├── App.java
@@ -368,6 +380,19 @@ Reporte generado con **JaCoCo** tras ejecutar `mvn test`. El informe HTML se enc
 - **[Visual Studio Code](https://code.visualstudio.com/)** — Editor usado para desarrollar y gestionar el proyecto
 - **[Markdown](https://www.markdownguide.org/)** — Lenguaje de marcado para el README
 - **[Git](https://git-scm.com/)** / **[GitHub](https://github.com/)** — Control de versiones y alojamiento del proyecto
+
+---
+
+## 📚 Recursos
+
+- **[The Java Tutorials — Controlling Access to Members of a Class](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)** — Documentación oficial de `protected` y el resto de modificadores de acceso
+- **[The Java Tutorials — Annotations](https://docs.oracle.com/javase/tutorial/java/annotations/)** — Documentación oficial de anotaciones (`@Override`, `@Test`...)
+- **[The Java Tutorials — Interfaces and Inheritance](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html)** — Documentación oficial de herencia y polimorfismo en Java
+- **[JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)** — Documentación oficial de JUnit 5
+- **[Hamcrest – JavaHamcrest](https://hamcrest.org/JavaHamcrest/)** — Documentación de los matchers de Hamcrest
+- **[JaCoCo Maven Plugin](https://www.jacoco.org/jacoco/trunk/doc/maven.html)** — Documentación del plugin de cobertura
+- **[Exec Maven Plugin](https://www.mojohaus.org/exec-maven-plugin/usage.html)** — Documentación del plugin usado para ejecutar la aplicación con `mvn exec:java`
+- **[Mermaid – Class Diagrams](https://mermaid.js.org/syntax/classDiagram.html)** — Documentación de Mermaid para diagramas de clase
 
 ---
 
