@@ -11,6 +11,8 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 - [Descripción](#-descripción)
 - [Cómo reproducir el proyecto](#-cómo-reproducir-el-proyecto)
 - [Estructura del repositorio](#-estructura-del-repositorio)
+- [Testing](#-testing)
+- [Cobertura de tests](#-cobertura-de-tests-coverage)
 - [Tecnologías](#-tecnologías)
 - [Autora](#-autora)
 
@@ -270,6 +272,21 @@ Cubre la clase de presentación, encargada de crear las tres cuentas de ejemplo 
 | `testCreateDemoAccounts_ShouldReturnThreeAccountsWithExpectedState` | Devuelve las 3 cuentas demo con el estado esperado |
 | `testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount`      | Imprime cada cuenta de la lista por consola        |
 | `testMain_ShouldPrintDemoAccounts`                                  | Ejecuta `main` e imprime las cuentas demo          |
+
+---
+
+## 📊 Cobertura de tests (coverage)
+
+Reporte generado con **JaCoCo** tras ejecutar `mvn test`. El informe HTML se encuentra en `target/site/jacoco/index.html`
+
+![Cobertura de tests con JaCoCo](assets/images/coverage/coverage-jacoco.png)
+
+| Métrica       | Cobertura |
+| ------------- | --------- |
+| Instrucciones | 100 %     |
+| Ramas         | 100 %     |
+| Líneas        | 100 %     |
+| Métodos       | 100 %     |
 
 ---
 
