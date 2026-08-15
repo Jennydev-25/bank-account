@@ -10,6 +10,7 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 
 - [Descripción](#-descripción)
 - [Cómo reproducir el proyecto](#-cómo-reproducir-el-proyecto)
+- [Estructura del repositorio](#-estructura-del-repositorio)
 - [Tecnologías](#-tecnologías)
 - [Autora](#-autora)
 
@@ -167,6 +168,30 @@ El reporte de cobertura se genera en `target/site/jacoco/index.html`, que puedes
 
 ```bash
 mvn exec:java
+```
+
+---
+
+## 📁 Estructura del repositorio
+
+```text
+bank-account/
+├── src/
+│   ├── main/java/dev/jenny/bankaccount/
+│   │   ├── App.java
+│   │   └── models/
+│   │       ├── Account.java
+│   │       ├── CheckingAccount.java
+│   │       └── SavingsAccount.java
+│   └── test/java/dev/jenny/bankaccount/
+│       ├── AppTest.java
+│       └── models/
+│           ├── AccountTest.java
+│           ├── CheckingAccountTest.java
+│           └── SavingsAccountTest.java
+├── .gitignore
+├── pom.xml
+└── README.md
 ```
 
 ---
