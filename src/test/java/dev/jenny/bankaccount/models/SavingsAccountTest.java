@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,55 +16,59 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class SavingsAccountTest {
 
+    private SavingsAccount savingsAccount;
+
+    @BeforeEach
+    void setUp() {
+        savingsAccount = new SavingsAccount(15000f, 3f);
+    }
+
     @ParameterizedTest(name = "balance {0} should result in an active account")
     @ValueSource(floats = { 10000f, 15000f })
     void testConstructor_BalanceAtOrAboveThreshold_ShouldBeActive(float balance) {
-        SavingsAccount savingsAccount = new SavingsAccount(balance, 3f);
-        assertThat(savingsAccount.getBalance(), is(equalTo(balance)));
-        assertThat(savingsAccount.getAnnualRate(), is(equalTo(3f)));
-        assertThat(savingsAccount.isActive(), is(true));
+        SavingsAccount account = new SavingsAccount(balance, 3f);
+        assertThat(account.getBalance(), is(equalTo(balance)));
+        assertThat(account.getAnnualRate(), is(equalTo(3f)));
+        assertThat(account.isActive(), is(true));
     }
 
     @Test
     void testConstructor_BalanceBelowThreshold_ShouldBeInactive() {
-        SavingsAccount savingsAccount = new SavingsAccount(5000f, 3f);
-        assertThat(savingsAccount.isActive(), is(false));
+        SavingsAccount inactiveAccount = new SavingsAccount(5000f, 3f);
+        assertThat(inactiveAccount.isActive(), is(false));
     }
 
     @Test
     void testDeposit_ActiveAccount_ShouldIncreaseBalance() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         savingsAccount.deposit(500f);
         assertThat(savingsAccount.getBalance(), is(equalTo(15500f)));
     }
 
     @Test
     void testDeposit_InactiveAccount_ShouldThrowException() {
-        SavingsAccount savingsAccount = new SavingsAccount(5000f, 3f);
+        SavingsAccount inactiveAccount = new SavingsAccount(5000f, 3f);
         IllegalStateException exception = assertThrows(IllegalStateException.class,
-                () -> savingsAccount.deposit(500f));
+                () -> inactiveAccount.deposit(500f));
         assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
     }
 
     @Test
     void testWithdraw_ActiveAccount_ShouldDecreaseBalance() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         savingsAccount.withdraw(500f);
         assertThat(savingsAccount.getBalance(), is(equalTo(14500f)));
     }
 
     @Test
     void testWithdraw_InactiveAccount_ShouldThrowException() {
-        SavingsAccount savingsAccount = new SavingsAccount(5000f, 3f);
+        SavingsAccount inactiveAccount = new SavingsAccount(5000f, 3f);
         IllegalStateException exception = assertThrows(IllegalStateException.class,
-                () -> savingsAccount.withdraw(500f));
+                () -> inactiveAccount.withdraw(500f));
         assertThat(exception.getMessage(), is(equalTo("Account is inactive")));
     }
 
     @ParameterizedTest(name = "{0} withdrawals should not add a fee")
     @ValueSource(ints = { 0, 4 })
     void testGenerateMonthlyStatement_FourOrFewerWithdrawals_ShouldNotAddFee(int withdrawalCount) {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         for (int i = 0; i < withdrawalCount; i++) {
             savingsAccount.withdraw(100f);
         }
@@ -76,7 +81,6 @@ public class SavingsAccountTest {
     @ParameterizedTest(name = "{0} withdrawals should add a fee of {1}")
     @MethodSource("excessWithdrawalFeeTestCases")
     void testGenerateMonthlyStatement_MoreThanFourWithdrawals_ShouldAddFee(int withdrawalCount, float expectedFee) {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         for (int i = 0; i < withdrawalCount; i++) {
             savingsAccount.withdraw(100f);
         }
@@ -94,7 +98,6 @@ public class SavingsAccountTest {
 
     @Test
     void testGenerateMonthlyStatement_BalanceDropsBelowThreshold_ShouldDeactivateAccount() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         savingsAccount.withdraw(6000f);
 
         savingsAccount.generateMonthlyStatement();
@@ -104,24 +107,22 @@ public class SavingsAccountTest {
 
     @Test
     void testGenerateMonthlyStatement_BalanceReachesThresholdWithInterest_ShouldReactivateAccount() {
-        SavingsAccount savingsAccount = new SavingsAccount(9999f, 3f);
+        SavingsAccount nearThresholdAccount = new SavingsAccount(9999f, 3f);
 
-        savingsAccount.generateMonthlyStatement();
-        savingsAccount.generateMonthlyStatement();
+        nearThresholdAccount.generateMonthlyStatement();
+        nearThresholdAccount.generateMonthlyStatement();
 
-        assertThat(savingsAccount.isActive(), is(true));
+        assertThat(nearThresholdAccount.isActive(), is(true));
     }
 
     @Test
     void testPrint_NewAccount_ShouldReturnInitialValues() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         assertThat(savingsAccount.print(),
                 is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0")));
     }
 
     @Test
     void testPrint_AfterOperations_ShouldReturnUpdatedValues() {
-        SavingsAccount savingsAccount = new SavingsAccount(15000f, 3f);
         savingsAccount.deposit(500f);
         savingsAccount.withdraw(200f);
         assertThat(savingsAccount.print(),

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,9 +15,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class CheckingAccountTest {
 
+    private CheckingAccount checkingAccount;
+
+    @BeforeEach
+    void setUp() {
+        checkingAccount = new CheckingAccount(15000f, 3f);
+    }
+
     @Test
     void testConstructor_ValidValues_ShouldInitializeFields() {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
         assertThat(checkingAccount.getBalance(), is(equalTo(15000f)));
         assertThat(checkingAccount.getAnnualRate(), is(equalTo(3f)));
         assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
@@ -25,8 +32,6 @@ public class CheckingAccountTest {
     @ParameterizedTest(name = "withdrawing {0} from a balance of 15000 should leave balance {1} without overdraft")
     @MethodSource("withdrawWithinBalanceTestCases")
     void testWithdraw_AmountWithinBalance_ShouldUpdateBalanceOnly(float amount, float expectedBalance) {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
-
         checkingAccount.withdraw(amount);
 
         assertThat(checkingAccount.getBalance(), is(equalTo(expectedBalance)));
@@ -42,8 +47,6 @@ public class CheckingAccountTest {
     @ParameterizedTest(name = "withdrawing {0} from a balance of 15000 should create an overdraft of {1}")
     @MethodSource("withdrawExceedsBalanceTestCases")
     void testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft(float amount, float expectedOverdraft) {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
-
         checkingAccount.withdraw(amount);
 
         assertThat(checkingAccount.getBalance(), is(equalTo(0f)));
@@ -58,8 +61,6 @@ public class CheckingAccountTest {
 
     @Test
     void testDeposit_NoOverdraft_ShouldIncreaseBalanceOnly() {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
-
         checkingAccount.deposit(500f);
 
         assertThat(checkingAccount.getBalance(), is(equalTo(15500f)));
@@ -70,7 +71,6 @@ public class CheckingAccountTest {
     @MethodSource("depositWithOverdraftTestCases")
     void testDeposit_WithOverdraft_ShouldIncreaseBalanceAndReduceOverdraft(float amount, float expectedBalance,
             float expectedOverdraft) {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
         checkingAccount.withdraw(20000f);
 
         checkingAccount.deposit(amount);
@@ -81,15 +81,13 @@ public class CheckingAccountTest {
 
     private static Stream<Arguments> depositWithOverdraftTestCases() {
         return Stream.of(
-                Arguments.of(2000f, 2000f, 3000f), // parcial: sobregiro baja, no llega a 0
-                Arguments.of(5000f, 5000f, 0f), // exacto: sobregiro llega justo a 0
-                Arguments.of(8000f, 8000f, 0f)); // de sobra: sobregiro a 0, el resto sube el saldo
+                Arguments.of(2000f, 2000f, 3000f), // partial: overdraft decreases but doesn't reach 0
+                Arguments.of(5000f, 5000f, 0f), // exact: overdraft reaches exactly 0
+                Arguments.of(8000f, 8000f, 0f)); // excess: overdraft reaches 0, remainder increases balance
     }
 
     @Test
     void testGenerateMonthlyStatement_ShouldSubtractFeeAndApplyInterest() {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
-
         checkingAccount.generateMonthlyStatement();
 
         assertThat((double) checkingAccount.getBalance(), is(closeTo(15037.5, 0.01)));
@@ -97,15 +95,12 @@ public class CheckingAccountTest {
 
     @Test
     void testPrint_NewAccount_ShouldReturnInitialValues() {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
-
         assertThat(checkingAccount.print(),
                 is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0, Overdraft: 0.00")));
     }
 
     @Test
     void testPrint_AfterOperations_ShouldReturnUpdatedValues() {
-        CheckingAccount checkingAccount = new CheckingAccount(15000f, 3f);
         checkingAccount.withdraw(20000f);
         checkingAccount.deposit(2000f);
 

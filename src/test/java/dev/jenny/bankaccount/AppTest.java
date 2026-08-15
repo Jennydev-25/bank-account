@@ -23,10 +23,12 @@ class AppTest {
 
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+    private List<Account> accounts;
 
     @BeforeEach
     void setUp() {
         System.setOut(new PrintStream(outputStream));
+        accounts = App.createDemoAccounts();
     }
 
     @AfterEach
@@ -36,8 +38,6 @@ class AppTest {
 
     @Test
     void testCreateDemoAccounts_ShouldReturnThreeAccountsWithExpectedState() {
-        List<Account> accounts = App.createDemoAccounts();
-
         assertThat(accounts, hasSize(3));
 
         Account account = accounts.get(0);
@@ -54,8 +54,6 @@ class AppTest {
 
     @Test
     void testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount() {
-        List<Account> accounts = App.createDemoAccounts();
-
         App.printAccounts(accounts);
 
         String output = outputStream.toString();
