@@ -9,6 +9,7 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 ## 📑 Índice
 
 - [Descripción](#-descripción)
+- [Diagrama de clase](#-diagrama-de-clase)
 - [Cómo reproducir el proyecto](#-cómo-reproducir-el-proyecto)
 - [Estructura del repositorio](#-estructura-del-repositorio)
 - [Testing](#-testing)
@@ -122,6 +123,73 @@ La clase Cuenta tiene dos clases hijas:
 - Repositorio de Github
 - Captura de pantalla del diagrama de clase o enlace público al archivo
 - Captura de pantalla de la sección testing de VSCode que muestre que se ha cumplido con la cobertura de tests
+
+</details>
+
+---
+
+## 📐 Diagrama de clase
+
+`Account` es la clase padre y expone la lógica común (consignar, retirar, calcular el interés, generar el extracto e imprimir), además del método protegido `validateAmount()` que reutilizan las dos clases hijas.
+
+`SavingsAccount` añade el atributo `active` y el privado `withdrawalsAtLastStatement`, con sus propios métodos privados de apoyo (`updateActiveStatus()`, `validateActive()`).
+
+`CheckingAccount` añade el atributo `overdraft` y redefine `withdraw()`, `deposit()` y `print()` para reflejarlo.
+
+![Diagrama de clase de Cuenta Bancaria](assets/images/diagram/class-diagram-uml.png)
+
+<details>
+<summary>Ver versión en Mermaid</summary>
+
+```mermaid
+classDiagram
+    class Account {
+        #balance : float
+        #depositCount : int
+        #withdrawalCount : int
+        #annualRate : float
+        #monthlyFee : float
+        +Account(balance: float, annualRate: float)
+        +getBalance() float
+        +getDepositCount() int
+        +getWithdrawalCount() int
+        +getAnnualRate() float
+        +getMonthlyFee() float
+        +deposit(amount: float) void
+        +withdraw(amount: float) void
+        +calculateMonthlyInterest() void
+        +generateMonthlyStatement() void
+        +print() String
+        #validateAmount(amount: float) void
+    }
+
+    class SavingsAccount {
+        #active : boolean
+        -withdrawalsAtLastStatement : int
+        +SavingsAccount(balance: float, annualRate: float)
+        +isActive() boolean
+        +deposit(amount: float) void
+        +withdraw(amount: float) void
+        +generateMonthlyStatement() void
+        +print() String
+        -updateActiveStatus() void
+        -validateActive() void
+    }
+
+    class CheckingAccount {
+        #overdraft : float
+        +CheckingAccount(balance: float, annualRate: float)
+        +getOverdraft() float
+        +withdraw(amount: float) void
+        +deposit(amount: float) void
+        +generateMonthlyStatement() void
+        +print() String
+    }
+
+    Account <|-- SavingsAccount
+    Account <|-- CheckingAccount
+
+```
 
 </details>
 
