@@ -6,6 +6,22 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 
 ---
 
+## 📸 Vista rápida
+
+|                         Diagrama de clase                         |                    Cobertura (JaCoCo)                    |
+| :---------------------------------------------------------------: | :------------------------------------------------------: |
+| ![Diagrama de clase](assets/images/diagram/class-diagram-uml.png) | ![Cobertura](assets/images/coverage/coverage-jacoco.png) |
+
+|                                 `AccountTest`                                  |                                      `CheckingAccountTest`                                      |
+| :----------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
+| ![Tests de AccountTest](assets/images/test-explorer/test-explorer-account.png) | ![Tests de CheckingAccountTest](assets/images/test-explorer/test-explorer-checking-account.png) |
+
+|                                     `SavingsAccountTest`                                      |                               `AppTest`                                |
+| :-------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------: |
+| ![Tests de SavingsAccountTest](assets/images/test-explorer/test-explorer-savings-account.png) | ![Tests de AppTest](assets/images/test-explorer/test-explorer-app.png) |
+
+---
+
 ## 📑 Índice
 
 - [Descripción](#-descripción)
@@ -127,6 +143,8 @@ La clase Cuenta tiene dos clases hijas:
 
 </details>
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 📐 Diagrama de clase
@@ -194,6 +212,8 @@ classDiagram
 
 </details>
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 🚀 Cómo reproducir el proyecto
@@ -241,6 +261,8 @@ El reporte de cobertura se genera en `target/site/jacoco/index.html`, que puedes
 mvn exec:java
 ```
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 📁 Estructura del repositorio
@@ -275,6 +297,8 @@ bank-account/
 ├── pom.xml
 └── README.md
 ```
+
+[Volver al índice](#-índice)
 
 ---
 
@@ -353,6 +377,8 @@ Cubre la clase de presentación, encargada de crear las tres cuentas de ejemplo 
 | `testPrintAccounts_GivenListOfAccounts_ShouldPrintEachAccount`      | Imprime cada cuenta de la lista por consola        |
 | `testMain_ShouldPrintDemoAccounts`                                  | Ejecuta `main` e imprime las cuentas demo          |
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 📊 Cobertura de tests (coverage)
@@ -368,6 +394,8 @@ Reporte generado con **JaCoCo** tras ejecutar `mvn test`. El informe HTML se enc
 | Líneas        | 100 %     |
 | Métodos       | 100 %     |
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 🛠️ Tecnologías
@@ -381,6 +409,8 @@ Reporte generado con **JaCoCo** tras ejecutar `mvn test`. El informe HTML se enc
 - **[Markdown](https://www.markdownguide.org/)** — Lenguaje de marcado para el README
 - **[Git](https://git-scm.com/)** / **[GitHub](https://github.com/)** — Control de versiones y alojamiento del proyecto
 
+[Volver al índice](#-índice)
+
 ---
 
 ## 📚 Recursos
@@ -388,6 +418,7 @@ Reporte generado con **JaCoCo** tras ejecutar `mvn test`. El informe HTML se enc
 - **[The Java Tutorials — Controlling Access to Members of a Class](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)** — Documentación oficial de `protected` y el resto de modificadores de acceso
 - **[The Java Tutorials — Annotations](https://docs.oracle.com/javase/tutorial/java/annotations/)** — Documentación oficial de anotaciones (`@Override`, `@Test`...)
 - **[The Java Tutorials — Interfaces and Inheritance](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html)** — Documentación oficial de herencia y polimorfismo en Java
+- **[Baeldung — A Guide to JUnit 5 Parameterized Tests](https://www.baeldung.com/parameterized-tests-junit-5)** — Guía de `@ParameterizedTest` y `@MethodSource`
 - **[JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)** — Documentación oficial de JUnit 5
 - **[Hamcrest – JavaHamcrest](https://hamcrest.org/JavaHamcrest/)** — Documentación de los matchers de Hamcrest
 - **[JaCoCo Maven Plugin](https://www.jacoco.org/jacoco/trunk/doc/maven.html)** — Documentación del plugin de cobertura
