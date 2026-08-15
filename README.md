@@ -9,6 +9,7 @@ Proyecto en **Java 21** con **Maven** que modela una cuenta bancaria genérica y
 ## 📑 Índice
 
 - [Descripción](#-descripción)
+- [Cómo reproducir el proyecto](#-cómo-reproducir-el-proyecto)
 - [Tecnologías](#-tecnologías)
 - [Autora](#-autora)
 
@@ -61,7 +62,7 @@ Inicializa `balance` y `annualRate` a partir de los parámetros recibidos
 
 - `overdraft` (float, inicial 0)
 
-  **Métodos redefinidos:**
+**Métodos redefinidos:**
 
 - `withdraw`: permite retirar más saldo del disponible; el excedente queda como sobregiro
 - `deposit`: aplica la cantidad consignada primero a cancelar el sobregiro pendiente; solo el sobrante aumenta el saldo
@@ -120,6 +121,53 @@ La clase Cuenta tiene dos clases hijas:
 - Captura de pantalla de la sección testing de VSCode que muestre que se ha cumplido con la cobertura de tests
 
 </details>
+
+---
+
+## 🚀 Cómo reproducir el proyecto
+
+### Requisitos previos
+
+| Herramienta                                                   | Requisito                  | Guía de instalación                                                                                       |
+| ------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [JDK 21](https://www.oracle.com/java/technologies/downloads/) | Instalado y en el `PATH`   | [Ver guía](https://docs.oracle.com/en/java/javase/21/install/overview-jdk-installation.html)              |
+| [Apache Maven](https://maven.apache.org/download.cgi)         | Instalado y en el `PATH`   | [Ver guía](https://maven.apache.org/install.html)                                                         |
+| [Git](https://git-scm.com/downloads)                          | Para clonar el repositorio | [Ver guía](https://git-scm.com/book/es/v2/Inicio---Sobre-el-Control-de-Versiones-Instalaci%C3%B3n-de-Git) |
+
+### Pasos
+
+**1. Comprueba que tienes Java y Maven instalados** (si algún comando no se reconoce, instálalo desde los enlaces de _Requisitos previos_):
+
+```bash
+java --version
+mvn --version
+```
+
+**2. Clona el repositorio:**
+
+```bash
+git clone https://github.com/Jennydev-25/bank-account.git
+```
+
+**3. Entra en la carpeta del proyecto:**
+
+```bash
+cd bank-account
+```
+
+**4. Ejecuta los tests** (compila y genera el reporte de cobertura de JaCoCo):
+
+```bash
+mvn test
+```
+
+El reporte de cobertura se genera en `target/site/jacoco/index.html`, que puedes abrir en el navegador.
+
+**5. Ejecuta la aplicación** e imprime las tres cuentas demo por consola:
+
+```bash
+mvn exec:java
+```
 
 ---
 
