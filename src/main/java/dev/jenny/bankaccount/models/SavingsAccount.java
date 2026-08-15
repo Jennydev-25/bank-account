@@ -9,6 +9,10 @@ import java.util.Locale;
  */
 public class SavingsAccount extends Account {
 
+    private static final float ACTIVE_BALANCE_THRESHOLD = 10000f;
+    private static final int FREE_WITHDRAWALS_PER_STATEMENT = 4;
+    private static final float EXTRA_WITHDRAWAL_FEE = 1000f;
+
     protected boolean active;
 
     public SavingsAccount(float balance, float annualRate) {
@@ -34,8 +38,8 @@ public class SavingsAccount extends Account {
 
     @Override
     public void generateMonthlyStatement() {
-        if (withdrawalCount > 4) {
-            monthlyFee += 1000 * (withdrawalCount - 4);
+        if (withdrawalCount > FREE_WITHDRAWALS_PER_STATEMENT) {
+            monthlyFee += EXTRA_WITHDRAWAL_FEE * (withdrawalCount - FREE_WITHDRAWALS_PER_STATEMENT);
         }
         updateActiveStatus();
         super.generateMonthlyStatement();
@@ -48,7 +52,7 @@ public class SavingsAccount extends Account {
     }
 
     private void updateActiveStatus() {
-        active = balance >= 10000;
+        active = balance >= ACTIVE_BALANCE_THRESHOLD;
     }
 
     private void validateActive() {
