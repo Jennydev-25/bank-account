@@ -1,0 +1,110 @@
+package dev.jenny.bankaccount.models;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+public class CheckingAccountTest {
+
+    private CheckingAccount checkingAccount;
+
+    @BeforeEach
+    void setUp() {
+        checkingAccount = new CheckingAccount(15000f, 3f);
+    }
+
+    @Test
+    void testConstructor_ValidValues_ShouldInitializeFields() {
+        assertThat(checkingAccount.getBalance(), is(equalTo(15000f)));
+        assertThat(checkingAccount.getAnnualRate(), is(equalTo(3f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
+    }
+
+    @ParameterizedTest(name = "withdrawing {0} from a balance of 15000 should leave balance {1} without overdraft")
+    @MethodSource("withdrawWithinBalanceTestCases")
+    void testWithdraw_AmountWithinBalance_ShouldUpdateBalanceOnly(float amount, float expectedBalance) {
+        checkingAccount.withdraw(amount);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(expectedBalance)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
+    }
+
+    private static Stream<Arguments> withdrawWithinBalanceTestCases() {
+        return Stream.of(
+                Arguments.of(5000f, 10000f),
+                Arguments.of(15000f, 0f));
+    }
+
+    @ParameterizedTest(name = "withdrawing {0} from a balance of 15000 should create an overdraft of {1}")
+    @MethodSource("withdrawExceedsBalanceTestCases")
+    void testWithdraw_AmountExceedsBalance_ShouldCreateOverdraft(float amount, float expectedOverdraft) {
+        checkingAccount.withdraw(amount);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(0f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(expectedOverdraft)));
+    }
+
+    private static Stream<Arguments> withdrawExceedsBalanceTestCases() {
+        return Stream.of(
+                Arguments.of(20000f, 5000f),
+                Arguments.of(18000f, 3000f));
+    }
+
+    @Test
+    void testDeposit_NoOverdraft_ShouldIncreaseBalanceOnly() {
+        checkingAccount.deposit(500f);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(15500f)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(0f)));
+    }
+
+    @ParameterizedTest(name = "depositing {0} after an overdraft of 5000 should leave balance {1} and overdraft {2}")
+    @MethodSource("depositWithOverdraftTestCases")
+    void testDeposit_WithOverdraft_ShouldIncreaseBalanceAndReduceOverdraft(float amount, float expectedBalance,
+            float expectedOverdraft) {
+        checkingAccount.withdraw(20000f);
+
+        checkingAccount.deposit(amount);
+
+        assertThat(checkingAccount.getBalance(), is(equalTo(expectedBalance)));
+        assertThat(checkingAccount.getOverdraft(), is(equalTo(expectedOverdraft)));
+    }
+
+    private static Stream<Arguments> depositWithOverdraftTestCases() {
+        return Stream.of(
+                Arguments.of(2000f, 0f, 3000f), // partial: overdraft decreases but doesn't reach 0
+                Arguments.of(5000f, 0f, 0f), // exact: overdraft reaches exactly 0
+                Arguments.of(8000f, 3000f, 0f)); // excess: overdraft reaches 0, remainder increases balance
+    }
+
+    @Test
+    void testGenerateMonthlyStatement_ShouldSubtractFeeAndApplyInterest() {
+        checkingAccount.generateMonthlyStatement();
+
+        assertThat((double) checkingAccount.getBalance(), is(closeTo(15037.5, 0.01)));
+    }
+
+    @Test
+    void testPrint_NewAccount_ShouldReturnInitialValues() {
+        assertThat(checkingAccount.print(),
+                is(equalTo("Balance: 15000.00, Monthly fee: 0.00, Transactions: 0, Overdraft: 0.00")));
+    }
+
+    @Test
+    void testPrint_AfterOperations_ShouldReturnUpdatedValues() {
+        checkingAccount.withdraw(20000f);
+        checkingAccount.deposit(2000f);
+
+        assertThat(checkingAccount.print(),
+                is(equalTo("Balance: 0.00, Monthly fee: 0.00, Transactions: 2, Overdraft: 3000.00")));
+    }
+}
